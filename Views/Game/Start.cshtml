@@ -1,0 +1,213 @@
+﻿@model BilgiYarismasiMVC.Models.Question
+@{
+    var level = Context.Session.GetInt32("Level") ?? 0;
+    var earnings = Context.Session.GetInt32("Earnings") ?? 0;
+
+    bool fiftyUsed = (Context.Session.GetString("FiftyUsed") == "true");
+    string hide1 = Context.Session.GetString("HideOption1") ?? "";
+    string hide2 = Context.Session.GetString("HideOption2") ?? "";
+
+    bool audienceUsed = ViewBag.AudienceUsed != null;
+    var pollData = ViewBag.AudiencePoll as Dictionary<string, int> ?? new();
+
+    var prizeLevels = new[] { 500, 1000, 2000, 3000, 5000, 7500, 15000, 30000, 60000, 125000, 250000, 500000, 1000000 };
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .game-container {
+        margin-top: 50px;
+    }
+
+    .question-card {
+        background-color: #1b1b2f;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+        .question-card h3 {
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+    .option-btn {
+        background-color: #243b55;
+        color: white;
+        border: 2px solid #17c0eb;
+        border-radius: 12px;
+        padding: 15px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+        .option-btn:hover {
+            background-color: #17c0eb;
+            color: black;
+        }
+
+    .prize-box {
+        background: #121212;
+        border-radius: 16px;
+        padding: 20px;
+        max-height: 540px;
+        overflow-y: auto;
+    }
+
+    .prize-item {
+        padding: 8px 14px;
+        font-size: 0.95rem;
+        border-left: 5px solid transparent;
+        margin-bottom: 5px;
+        color: #bbb;
+    }
+
+        .prize-item.active {
+            background: linear-gradient(90deg, gold, #ffdd57);
+            color: #000;
+            font-weight: bold;
+            border-left: 5px solid #000;
+            border-radius: 8px;
+        }
+
+    .timer-box {
+        background: #2f3542;
+        color: #fff;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .joker-buttons .btn {
+        font-weight: 600;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        padding: 10px 20px;
+    }
+
+    .audience-poll-bar {
+        height: 80px;
+        background-color: #0d6efd;
+        color: white;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        font-weight: bold;
+        border-radius: 6px;
+    }
+</style>
+
+<div class="container game-container">
+    <div class="row">
+        <!-- SOL TARAF: SORU -->
+        <div class="col-lg-8 mb-4">
+            <div class="question-card">
+                <h3 class="text-center">@Model.QuestionText</h3>
+
+                <!-- Jokerler -->
+                <div class="d-flex justify-content-center gap-3 joker-buttons mb-3">
+                    <form method="post" class="d-flex gap-2">
+                        <button type="submit" formaction="/Game/UseFiftyFifty" class="btn btn-warning" @(fiftyUsed ? "disabled" : "")>
+                            🪄 %50 Joker @(fiftyUsed ? "(Kullanıldı)" : "")
+                        </button>
+                        <button type="submit" formaction="/Game/UseAudienceJoker" name="id" value="@Model.Id" class="btn btn-info" @(audienceUsed ? "disabled" : "")>
+                            👥 Seyirci Joker
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Seyirci Anketi -->
+                @if (pollData.Any())
+                {
+                    <div class="mb-4">
+                        <h6 class="text-center">📊 Seyirci Cevap Dağılımı</h6>
+                        <div class="row text-center">
+                            @foreach (var item in pollData.OrderBy(i => i.Key))
+                            {
+                                <div class="col-3">
+                                    <div class="audience-poll-bar">@item.Value%</div>
+                                    <small>@item.Key</small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Sayaç -->
+                <div class="timer-box">
+                    ⏳ Kalan Süre: <span id="timer">30</span> saniye
+                </div>
+
+                <!-- ŞIKLAR -->
+                <form asp-action="Answer" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="row g-3">
+                        @if (hide1 != "A" && hide2 != "A")
+                        {
+                            <div class="col-6"><button type="submit" name="selectedOption" value="A" class="btn option-btn w-100">A) @Model.OptionA</button></div>
+                        }
+                        @if (hide1 != "B" && hide2 != "B")
+                        {
+                            <div class="col-6"><button type="submit" name="selectedOption" value="B" class="btn option-btn w-100">B) @Model.OptionB</button></div>
+                        }
+                        @if (hide1 != "C" && hide2 != "C")
+                        {
+                            <div class="col-6"><button type="submit" name="selectedOption" value="C" class="btn option-btn w-100">C) @Model.OptionC</button></div>
+                        }
+                        @if (hide1 != "D" && hide2 != "D")
+                        {
+                            <div class="col-6"><button type="submit" name="selectedOption" value="D" class="btn option-btn w-100">D) @Model.OptionD</button></div>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- SAĞ TARAF: ÖDÜL TABLOSU -->
+        <div class="col-lg-4">
+            <div class="prize-box">
+                <h6 class="text-center text-light mb-3">🏆 Ödül Tablosu</h6>
+                @for (int i = prizeLevels.Length - 1; i >= 0; i--)
+                {
+                    var isActive = (i == level);
+                    <div class="prize-item @(isActive ? "active" : "")">
+                        @(i + 1). Soru - @prizeLevels[i].ToString("N0") TL
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let timeLeft = 30;
+    let timerElement = document.getElementById("timer");
+
+    let countdown = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = timeLeft;
+
+        if (timeLeft <= 10) {
+            timerElement.style.color = "#ff4444";
+            timerElement.style.fontWeight = "bold";
+            timerElement.style.fontSize = "1.5rem";
+        }
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            window.location.href = "/Game/GameOver";
+        }
+    }, 1000);
+</script>

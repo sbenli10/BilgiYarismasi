@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Zihin Arenası - Başlangıç";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: linear-gradient(to right, #141e30, #243b55);
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .intro-card {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    }
+
+    .game-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #ffd700;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        color: #ccc;
+        margin-bottom: 2rem;
+    }
+
+    .highlight {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    .rules {
+        text-align: left;
+        margin-top: 2rem;
+    }
+
+        .rules li {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+    .start-btn {
+        background: linear-gradient(135deg, #00c853, #64dd17);
+        border: none;
+        color: white;
+        padding: 14px 36px;
+        font-size: 1.2rem;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+        .start-btn:hover {
+            background: linear-gradient(135deg, #00b248, #43a047);
+            transform: scale(1.05);
+        }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-md-10 col-lg-8">
+        <div class="intro-card text-center">
+            <div class="game-title">🧠 Zihin Arenası</div>
+            <div class="subtitle">Bilginin gücünü test etmeye hazır mısın?</div>
+
+            <p class="mb-3">
+                Bu oyunda <span class="highlight">@ViewBag.TotalQuestions</span> adet çoktan seçmeli soru seni bekliyor.<br />
+                Her soruya cevap vermek için <span class="highlight">@ViewBag.TotalTime</span> süren var.
+            </p>
+
+            <p>Oyun sırasında iki joker hakkın olacak:</p>
+
+            <ul class="list-unstyled">
+                <li>🪄 <strong>%50 Joker</strong>: İki yanlış şıkkı otomatik elenir</li>
+                <li>👥 <strong>Seyirci Jokeri</strong>: Seyircilerin istatistikleriyle yardım al</li>
+            </ul>
+
+            <hr />
+
+            <div class="rules">
+                <h5>📜 Oyun Kuralları</h5>
+                <ul>
+                    <li>⏱️ Her soru için belirli bir süre vardır, süre bitince cevaplayamazsın.</li>
+                    <li>❌ Yanlış cevap verirsen yarışma sona erer.</li>
+                    <li>✅ Doğru cevapladıkça ödül tutarın artar.</li>
+                    <li>🧩 Joker hakların sadece bir kez kullanılabilir.</li>
+                    <li>🏆 Hedefin: En yüksek ödüle ulaşmak!</li>
+                </ul>
+            </div>
+
+            <form asp-action="Start" method="post" class="mt-4">
+                <button type="submit" class="start-btn">🚀 Yarışmayı Başlat</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@{
+    var kazanc = Context.Session.GetInt32("Earnings") ?? 0;
+    ViewData["Title"] = "Oyun Bitti";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: radial-gradient(circle at top, #2c3e50, #000);
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .game-over-card {
+        background-color: rgba(0, 0, 0, 0.85);
+        border: none;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+
+    .game-over-card .card-header {
+        background: linear-gradient(90deg, #e53935, #d32f2f);
+        border-bottom: none;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .game-over-card .card-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .earnings {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #00e676;
+    }
+
+    .restart-btn {
+        background: linear-gradient(135deg, #2196f3, #1e88e5);
+        color: white;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .restart-btn:hover {
+        background: linear-gradient(135deg, #1c77c3, #1565c0);
+        transform: scale(1.05);
+    }
+
+    .fade-in {
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-md-8">
+        <div class="card text-center game-over-card fade-in">
+            <div class="card-header text-white">
+                <h2>❌ Oyun Bitti</h2>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">💰 Kazancınız</h4>
+                <p class="earnings">@kazanc TL</p>
+                <a href="/Game/Start" class="btn restart-btn mt-4">🔁 Tekrar Dene</a>
+            </div>
+        </div>
+    </div>
+</div>

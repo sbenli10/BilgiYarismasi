@@ -1,0 +1,104 @@
+﻿@model BilgiYarismasiMVC.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-4">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Hesap Oluştur</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    @{
+                        var success = TempData["RegisterSuccess"] as string;
+                        if (!string.IsNullOrEmpty(success))
+                        {
+                            <div class="alert alert-success">@success</div>
+                        }
+                    }
+
+
+                    @if (TempData["RegisterError"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["RegisterError"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="alert alert-info small">
+                        Şifreniz en az:
+                        <ul>
+                            <li>6 karakter uzunluğunda</li>
+                            <li>1 büyük harf</li>
+                            <li>1 küçük harf</li>
+                            <li>1 rakam</li>
+                            <li>1 özel karakter (!@@#$%^&*) içermelidir</li>
+                        </ul>
+                    </div>
+
+                    <form asp-action="Register" method="post" novalidate>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Ad" class="form-control" placeholder="Ad" />
+                            <label asp-for="Ad">Ad</label>
+                            <span asp-validation-for="Ad" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Soyad" class="form-control" placeholder="Soyad" />
+                            <label asp-for="Soyad">Soyad</label>
+                            <span asp-validation-for="Soyad" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" class="form-control" placeholder="E-posta" />
+                            <label asp-for="Email">E-posta</label>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Password" class="form-control" type="password" placeholder="Şifre" />
+                            <label asp-for="Password">Şifre</label>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Şifreyi Doğrula" />
+                            <label asp-for="ConfirmPassword">Şifreyi Doğrula</label>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+                            <i class="bi bi-person-plus"></i> Kayıt Ol
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <span class="text-muted">Zaten bir hesabın var mı?</span>
+                        <a asp-action="Login" asp-controller="Account" class="ms-1">Giriş Yap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

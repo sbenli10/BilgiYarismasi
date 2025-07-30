@@ -1,0 +1,49 @@
+﻿@model BilgiYarismasiMVC.Models.Question
+@{
+    ViewData["Title"] = "Yeni Soru Ekle";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container mt-5">
+    <h2 class="mb-4">Yeni Soru Ekle</h2>
+
+    <form asp-action="Create">
+        <div class="mb-3">
+            <label asp-for="QuestionText" class="form-label">Soru</label>
+            <textarea asp-for="QuestionText" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="OptionA" class="form-label">A Şıkkı</label>
+                <input asp-for="OptionA" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="OptionB" class="form-label">B Şıkkı</label>
+                <input asp-for="OptionB" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="OptionC" class="form-label">C Şıkkı</label>
+                <input asp-for="OptionC" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="OptionD" class="form-label">D Şıkkı</label>
+                <input asp-for="OptionD" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="CorrectOption" class="form-label">Doğru Şık (A–D)</label>
+                <input asp-for="CorrectOption" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Difficulty" class="form-label">Zorluk</label>
+                <select asp-for="Difficulty" class="form-select">
+                    <option>Kolay</option>
+                    <option>Orta</option>
+                    <option>Zor</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+        <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+    </form>
+</div>
