@@ -55,4 +55,5 @@ Soruya verilen cevap doğruysa kullanıcı bir sonraki seviyeye geçer.
 Tüm sorular biterse veya süre dolarsa oyun sona erer.
 
 👤 Geliştirici
-Bu proje, Burak Ramazan Çicekli tarafından bitirme projesi olarak hazırlanmıştır.
+
+Bu proje, Said Benli tarafından yapılmıştır. 
